@@ -45,7 +45,7 @@ int main(){
 			return 1;
 		}
 		
-	} while (true); // здесь добавить Стаканчики, чтобы весь цикл выполнялся пока они есть
+	} while (true); // Add coffee cups here so that the whole cycle runs while they are
 	return 0;
 }
 
@@ -75,7 +75,7 @@ void showBalanceMenu(double enteredValue, int chosenCoffee){
 	cout << "***************************************************" << endl << endl;
 }
 
-//получаем цену кофе
+//use to get сost of coffee
 int getCoffeeCost(int chosenCoffee){
 	if (chosenCoffee == 1){
 		return EspressoCost;
@@ -86,7 +86,7 @@ int getCoffeeCost(int chosenCoffee){
 	} else return false;
 }
 
-//получаем кофе
+//use to get type of coffee
 int getChosenCoffee(){
 	int typeOfCoffee;
 	
@@ -95,7 +95,7 @@ int getChosenCoffee(){
 	return typeOfCoffee;
 }
 
-//получаем сахар
+//use to get amount of sugar
 int getSugar(){
 	int amountOfSugar;
 	
@@ -104,7 +104,7 @@ int getSugar(){
 	return amountOfSugar;
 }
  
-//получаем деньги
+//use to get cash
 double getMoney(){
 	double money;
 	
@@ -113,7 +113,7 @@ double getMoney(){
 	return money;
 }
 
-//проверка номера кофе
+//use to check entered number of coffee
 int coffeeValidation(int chosenCoffee){
 	if (chosenCoffee > 3 || chosenCoffee <= 0){
 		cout << "Error! There is no such coffee. Try again" << endl;
@@ -121,7 +121,7 @@ int coffeeValidation(int chosenCoffee){
 	} else return false;
 }
 
-//проверка совпадения цены выбранного кофе и введенных денег
+//use to check the coincidence of the price of the selected coffee and the deposited money
 int inputValidation(int chosenCoffee, int enteredValue){
 	if (chosenCoffee == 1){
 		if (enteredValue >= EspressoCost){
@@ -138,7 +138,7 @@ int inputValidation(int chosenCoffee, int enteredValue){
 	} else return false;
 }
 
-//типа выдача кофе)
+//it gives you coffee :)
 int giveCoffee(int chosenCoffee){
 	if (chosenCoffee == 1){
 		cout << "   ________" << endl
