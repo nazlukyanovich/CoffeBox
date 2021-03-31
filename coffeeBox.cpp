@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdlib.h>
-#define EspressoCost 2
-#define CapuccinoCost 2.50
-#define LatteCost 3
+#define EspressoCost 1.5
+#define CapuccinoCost 2.0
+#define LatteCost 2.5
 #define PIN 9932
 
 using namespace std;
@@ -37,6 +37,9 @@ double getCoffeeCost(double chosenCoffee);
 double inputValidation(double chosenCoffee, double &money, int &cups);
 double giveCoffee(double chosenCoffee);
 
+double gMoney = 0.0;
+int attemptPin = 2;
+
 int main(){
 	int cups = 7;
 	double money = 0.0, gBalance = 0.0;
@@ -46,9 +49,8 @@ int main(){
 	return 0;
 }
 
-
-
 void showStartMenu(double &money, double &gBalance, int &cups){
+	
 	double chosenCoffee = 0;
 	
 	cin.clear();
@@ -65,11 +67,11 @@ void showStartMenu(double &money, double &gBalance, int &cups){
 			
 			cout << endl;
 			showUIStars();
-			cout << "Your balance: " << money << " rubles" << endl;
-			cout << "Please, choose your coffee" << endl;
-			cout << "1 - Espresso (" << EspressoCost << " rubles)"  << endl 
-				 << "2 - Capuccino (" << CapuccinoCost << " rubles)"  << endl
-				 << "3 - Latte (" << LatteCost << " rubles)" << endl
+			cout << "Your balance: " << money << " BYN" << endl << endl;
+			cout << "Please, choose your coffee" << endl << endl;
+			cout << "1 - Espresso (" << EspressoCost << " BYN)"  << endl 
+				 << "2 - Capuccino (" << CapuccinoCost << " BYN)"  << endl
+				 << "3 - Latte (" << LatteCost << " BYN)" << endl
 				 << "4 - Top up balance" << endl
 				 << "0 - Enter the service menu" << endl;
 			showUIStars();
@@ -84,12 +86,14 @@ void showStartMenu(double &money, double &gBalance, int &cups){
 	} else if (cups == 0) {
 		cleanConsole();
 		showUIStars();
+		
 		cout << "The cups are over! Please, try later." << endl;
 		cout << "You will be redirected to the service menu" << endl;
-		cout << "Please, call the serviceman to replenish cups" << endl;
+		cout << "Please, call the serviceman to replenish cups: +375 29 1223344" << endl;
 		showUIStars();
 		
 		system("pause");
+		
 		enterServiceMenu(money, gBalance, cups);
 	}
 }
@@ -99,39 +103,41 @@ void showBalanceMenu(double chosenCoffee, double &money, double &gBalance, int &
 	cin.clear();
 	fflush(stdin);
 	
-	//do{
-		cleanConsole();
+	cleanConsole();
 		
-		showDeviceName();
+	showDeviceName();
 		
-		cout << endl;
-		showUIStars();
-		cout << "Attention! Coffee machine does not give out change" << endl << endl;
-		cout << "Please, insert required amount of money" << endl
-			 << "The cost of your order: " << getCoffeeCost(chosenCoffee) << " rubles" << endl
-			 << "Your balance: " << money << " rubles" << endl
-			 << "1 - 0.50 rubles" << endl
-			 << "2 - 1 ruble" << endl
-			 << "3 - 2 rubles" << endl
-			 << "4 - 5 rubles" << endl
-			 << "5 - 10 rubles" << endl
-			 << "0 - back to menu" << endl;
-		showUIStars();
-		cout << endl;
+	cout << endl;
+	showUIStars();
+	cout << "Attention! Coffee machine does not give out change" << endl << endl;
+	cout << "Please, insert required amount of money" << endl << endl
+		 << "The cost of your order: " << getCoffeeCost(chosenCoffee) << " BYN" << endl
+		 << "Your balance: " << money << " BYN" << endl
+		 << "1 - 0.50 BYN" << endl
+		 << "2 - 1 BYN" << endl
+		 << "3 - 2 BYN" << endl
+		 << "4 - 5 BYN" << endl
+		 << "5 - 10 BYN" << endl
+		 << "0 - back to menu" << endl;
+	showUIStars();
+	cout << endl;
 		
-		money += getMoney(money, gBalance, cups);
-		
-	//} while(inputValidation(chosenCoffee, money, cups) == false);
-	
-	gBalance += money;	
+	money += getMoney(money, gBalance, cups);
+	gMoney = money;
 	
 	coincidenceCheck(chosenCoffee, money, gBalance, cups);
 }
 
+
+
 void coincidenceCheck(double chosenCoffee, double &money, double &gBalance, int &cups){
+	
+	
 	if (inputValidation(chosenCoffee, money, cups)){
 		giveCoffee(chosenCoffee);
-		cups--;
+		cups--;	
+		//gMoney = money;
+		//gBalance += gMoney;
 		money -= getCoffeeCost(chosenCoffee);
 		showStartMenu(money, gBalance, cups);
 	} else {
@@ -142,11 +148,11 @@ void coincidenceCheck(double chosenCoffee, double &money, double &gBalance, int 
 void cupsWarning(double &money, double &gBalance, int &cups){
 	if (cups <= 5){
 		cout << "Warning! " << cups << " cups left!" << endl
-			 << "Call the serviceman to replenish number of cups" << endl;
+			 << "Call the serviceman to replenish number of cups: +375 29 1223344" << endl;
 	} else;
 }
 
-//use to get ñost of coffee
+//use to get nost of coffee
 double getCoffeeCost(double chosenCoffee){
 	if (chosenCoffee == 1){
 		return EspressoCost;
@@ -159,22 +165,24 @@ double getCoffeeCost(double chosenCoffee){
  
 //use to get cash
 double getMoney(double &money, double &gBalance, int &cups){
+	
 	int enteredValue = 0 ;
-		cin >> enteredValue;
+	
+	cin >> enteredValue;
 		
-		if(enteredValue == 0){
-			showStartMenu(money, gBalance, cups);
-		} else if (enteredValue == 1){
-			return 0.50;
-		} else if (enteredValue == 2){
-			return 1;
-		} else if (enteredValue == 3){
-			return 2;
-		} else if (enteredValue == 4){
-			return 5;
-		} else if (enteredValue == 5){
-			return 10;
-		} else return 0;
+	if(enteredValue == 0){
+		showStartMenu(money, gBalance, cups);
+	} else if (enteredValue == 1){
+		return 0.50;
+	} else if (enteredValue == 2){
+		return 1;
+	} else if (enteredValue == 3){
+		return 2;
+	} else if (enteredValue == 4){
+		return 5;
+	} else if (enteredValue == 5){
+		return 10;
+	} else return 0;
 	
 }
 
@@ -182,8 +190,11 @@ double getMoney(double &money, double &gBalance, int &cups){
 double coffeeValidation(double chosenCoffee, double &money, double &gBalance, int &cups){
 	if (chosenCoffee > 4 || chosenCoffee < 0){
 		cleanConsole();
+		
 		cout << "Error! There is no such coffee. Try again" << endl;
+		
 		system("pause");
+		
 		return true;
 	} else if (chosenCoffee == 0){
 		enterServiceMenu(money, gBalance, cups);
@@ -195,24 +206,32 @@ double coffeeValidation(double chosenCoffee, double &money, double &gBalance, in
 //use to check the coincidence of the price of the selected coffee and the deposited money
 double inputValidation(double chosenCoffee, double &money, int &cups){
 	if (chosenCoffee == 1 && cups > 0){
+		
 		if (money >= EspressoCost){
 			return true;
 		} else return false;
+		
 	} else if (chosenCoffee == 2 && cups > 0){
+		
 		if (money >= CapuccinoCost){
 			return true;
 		} else return false;
+		
 	} else if (chosenCoffee == 3 && cups > 0){
+		
 		if (money >= LatteCost){
 			return true;
 		} else return false;
+		
 	} else return false;
 }
 
 //it gives you coffee :)
 double giveCoffee(double chosenCoffee){
 	if (chosenCoffee == 1){
+		
 		cleanConsole();
+		
 		cout << endl;
 		showUIStars();
 		cout << "Please, take your coffee" << endl;
@@ -226,10 +245,13 @@ double giveCoffee(double chosenCoffee){
 			 << "  \\________/" << endl << endl;
 			 showUIStars();
 			 cout << endl;
+			 
 		system("pause");
 		
 	} else if (chosenCoffee == 2){
+		
 		cleanConsole();
+		
 		cout << endl;
 		showUIStars();
 		cout << "Please, take your coffee" << endl;
@@ -243,10 +265,13 @@ double giveCoffee(double chosenCoffee){
 			 << "  \\_________/" << endl << endl;
 			 showUIStars();
 			 cout << endl;
+			 
 		system("pause");
 
 	} else if (chosenCoffee == 3){
+		
 		cleanConsole();
+		
 		cout << endl;
 		showUIStars();
 		cout << "Please, take your coffee" << endl;
@@ -260,6 +285,7 @@ double giveCoffee(double chosenCoffee){
 			 << "  \\________/" << endl << endl;
 			 showUIStars();
 			 cout << endl;
+			 
 		system("pause");
 	} else return false;
 }
@@ -276,40 +302,35 @@ void showUIStars(){
 	cout << "***************************************************" << endl;
 }
 
-/*void cupsWarning(double money, double gBalance, int cups){
-	if (cups <= 5){
-		cout << "Warning! " << cups << " cups left!" << endl
-			 << "Call the serviceman to replenish number of cups" << endl;
-	} else if (cups == 0){
-		cout << "The cups are over! Please, try later." << endl;
-		showStartMenu(money, gBalance, cups);
-	} else;
-}*/
-
-void enterServiceMenu(double &money, double &gBalance, int &cups)  
-{
-	int attemptPin = 2, enteredPin = 0;
+void enterServiceMenu(double &money, double &gBalance, int &cups){
+	 
+	int enteredPin = 0;
+	
+	gBalance += gMoney;
 	
 	while (attemptPin >= 0){
-		system("CLS");
+		cleanConsole();
 		
 		showUIStars();
-		cout << "Enter the PIN code to enter the service menu: " << endl;
+		cout << "Enter the PIN code to enter the service menu: " << endl << endl
+			 << "Press 0 to back to main menu" << endl;
 		showUIStars();
 		cout << endl;
 		
 		cin >> enteredPin;
 		cout << endl;
 		
-		system("CLS");
+		cleanConsole();
+		
 		if (enteredPin == PIN){
+			money = 0;
 			showServiceMenu(money, gBalance, cups);			
-		}
-		else if (enteredPin != PIN and attemptPin > 0){
-			cout << "Error. Wrong PIN, try again. You have " << attemptPin << " attempts" << endl;
+		} else if (enteredPin == 0){
+			showStartMenu(money, gBalance, cups);
+		} else if (enteredPin != PIN and attemptPin > 0){
+			cout << "Error. Wrong PIN, try again." << endl;
 			system("pause");
-		}
-		else if (attemptPin == 0){
+		} else if (attemptPin == 0){
 			cout << "Wrong PIN. The system blocked" << endl;
 			system("pause");
 			exit(1);
@@ -323,7 +344,7 @@ void showServiceMenu(double &money, double &gBalance, int &cups)
 {
 	int userChoice = 0;
 	
-	system("CLS");
+	cleanConsole();
 	showUIStars();
 	cout << "Service menu" << endl;
 	cout << "1. Actual balance" << endl;
@@ -341,41 +362,42 @@ void showServiceMenu(double &money, double &gBalance, int &cups)
 void userChoiceServiceMenuNumber(int userChoice, double &money, double &gBalance, int &cups)
 {
 	if (userChoice == 1) {
-		system("CLS");
+		cleanConsole();
 		showServiceBalance(money, gBalance, cups);
 	}
 	else if (userChoice == 2){
-		system("CLS");	
+		cleanConsole();	
 		showCupsBalance(money, gBalance, cups);
 	}
 	else if (userChoice == 3){
-		system("CLS");	
+		cleanConsole();	
 		showWithdrawMoney(money, gBalance, cups);
 	}
 	else if (userChoice == 0){
-		system("CLS");	
+		cleanConsole();	
 		showStartMenu(money, gBalance, cups);
 	}
 	else {
-		system("CLS");
+		cleanConsole();
 		cout << "Wrong input. Choose correct option" << endl;
 		userChoiceServiceMenuNumber(userChoice, money, gBalance, cups);
 	}	
 }
 
-void showServiceBalance(double &money, double &gBalance, int &cups)	//get function number of money from main menu
+void showServiceBalance(double &money, double &gBalance, int &cups)
 {	
 	int userChoice = 0;
 	
 	showUIStars();
-	cout << "The current cash balance is " << gBalance << endl;//get function number of money from main menu
+	cout << "The current cash balance is " << gBalance << endl;
 	cout << "Press 1 to return to the service menu" << endl;
 	showUIStars();
 	cout << endl;
 	
 	cin >> userChoice;
 	
-	system("CLS");
+	cleanConsole();
+	
 	if (userChoice == 1){
 		showServiceMenu(money, gBalance, cups);
 		cout << "Wrong input!" << endl;
@@ -383,58 +405,49 @@ void showServiceBalance(double &money, double &gBalance, int &cups)	//get functi
 	}
 }			
 
-void showCupsBalance(double &money, double &gBalance, int &cups)	//get function number of cups from main menu
+void showCupsBalance(double &money, double &gBalance, int &cups)
 {
-	int userChoice = 0;   //get function number of cups from main menu
+	int userChoice = 0, addNumCups = 0;
 	
 	showUIStars();
-	cout << "The current cups balance is " << cups << endl << endl; //get function number of cups from main menu
-	cout << "Press 1 to add 100 cups" << endl;
-	cout << "Press 2 to add 200 cups" << endl;
-	cout << "Press 3 to add 500 cups" << endl;
-	cout << "Press 4 to return to the service menu" << endl;
+	cout << "The current cups balance is " << cups << endl << endl;
+	cout << "Press 1 to replenish the cups" << endl;
+	cout << "Press 2 to return to the service menu" << endl;
 	showUIStars();
 	cout << endl;
 	
 	cin >> userChoice;
 	
-	system("CLS");
+	cleanConsole();
+	
 	if (userChoice == 1){
 		showUIStars();
-		cout << "100 cups were added" << endl;
-		cups = cups + 100;  //get function number of cups from main menu
-		cupsMaxTest(cups);  //get function number of cups from main menu
-		cupsReplenishmentMenu(money, gBalance, cups);
-	}
-	else if (userChoice == 2){
-		showUIStars();
-		cout << "200 cups were added" << endl;
-		cups = cups + 200;  //get function number of cups from main menu
+		cout << "Enter the number of added cups" << endl;
+		cin >> addNumCups;
+		
+		cups = cups + addNumCups;
 		cupsMaxTest(cups);
+		
 		cupsReplenishmentMenu(money, gBalance, cups);
 	}
-	else if (userChoice == 3){
-		showUIStars();
-		cout << "500 cups were added" << endl;
-		cups = cups + 500;  //get function number of cups from main menu
-		cupsMaxTest(cups);  
-		cupsReplenishmentMenu(money, gBalance, cups);
-	}
-	else if (userChoice == 4)
+	else if (userChoice == 2)
 		showServiceMenu(money, gBalance, cups);
 	else {
 		cout << "Wrong input!" << endl;
+		
 		showCupsBalance(money, gBalance, cups);
 	}
 }				
 
-int cupsMaxTest(int &cups) // Add correct cups variable and in prototype
+int cupsMaxTest(int &cups)
 {
-	if (cups > 700){   // Add correct cups variable
+	if (cups > 700){ 
 		cout << "Error. Too many cups added. Maximum number of cups is 700" << endl;
-		cout << "Current number of cups is 700" << endl << endl;   // Add correct cups variable                  
-		cups = 700; // Add correct cups variable
-	}	return cups; // Add correct cups variable
+		cout << "Current number of cups is 700" << endl << endl;               
+		cups = 700;
+	}
+	
+	return cups;
 }
 
 void cupsReplenishmentMenu(double &money, double &gBalance, int &cups)
@@ -447,7 +460,8 @@ void cupsReplenishmentMenu(double &money, double &gBalance, int &cups)
 	
 	cin >> userChoice;
 	
-	system("CLS");
+	cleanConsole();
+	
 	while (userChoice != 2){
 		cout << "Wrong input. Press 2 to return to the service menu" << endl;
 		cin >> userChoice;
@@ -468,10 +482,11 @@ void showWithdrawMoney(double &money, double &gBalance, int &cups)
 	
 	cin >> userChoice;
 	
-	system("CLS");
+	cleanConsole();
+	
 	if (userChoice == 1){
 		cout << "You withdrew " << gBalance << " BYN" << endl << endl;
-		//amount of money = 0; get function money from main menu
+		gBalance = 0;
 		withdrawMoneyMenu(money, gBalance, cups);
 	}
 	else if (userChoice == 2)
